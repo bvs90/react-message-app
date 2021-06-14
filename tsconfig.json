@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "allowJs": false,
+    "allowSyntheticDefaultImports": true,
+    "jsx": "react",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noImplicitAny": true,
+    "outDir": "./dist/",
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "target": "ES5",
+    "esModuleInterop": true
+  },
+  "include": ["./src/*.tsx", "./src/*.ts"]
+}
