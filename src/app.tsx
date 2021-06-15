@@ -1,14 +1,7 @@
-import React from "react";
+import React from 'react';
 
-interface AppProps {
-  lang: string;
-  username: string;
-}
+import { Messages } from './messages/messages';
 
-export function App({ lang, username }: AppProps): React.ReactElement {
-  return (
-    <h1>
-      Hi {username}, welcome to {lang}!
-    </h1>
-  );
+export function App(): React.ReactElement {
+  return <Messages />;
 }

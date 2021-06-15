@@ -1,0 +1,14 @@
+{
+  "messages": [
+    {
+      "content": "This is message 1",
+      "senderUuid": "001",
+      "sentAt": "2021-06-15T09:29:40Z"
+    },
+    {
+      "content": "This is message 2",
+      "senderUuid": "002",
+      "sentAt": "2021-06-15T10:29:23Z"
+    }
+  ]
+}
