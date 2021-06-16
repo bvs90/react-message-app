@@ -1,4 +1,3 @@
-// import './messages.json';
 import { IMessage } from './message/message.interface';
 
 export function fetchMessages(): Promise<IMessage[]> {
@@ -7,7 +6,11 @@ export function fetchMessages(): Promise<IMessage[]> {
       'Content-Type': 'applicaton/json',
       'Accept': 'application/json'
     }
-  }).then((response) => {
-    return response.json();
-  });
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data.messages;
+    });
 }

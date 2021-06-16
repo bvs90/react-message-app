@@ -9,6 +9,21 @@
       "content": "This is message 2",
       "senderUuid": "002",
       "sentAt": "2021-06-15T10:29:23Z"
+    },
+    {
+      "content": "This is message 3",
+      "senderUuid": "003",
+      "sentAt": "2021-06-15T10:29:23Z"
+    },
+    {
+      "content": "This is message 4",
+      "senderUuid": "004",
+      "sentAt": "2021-06-15T10:29:23Z"
+    },
+    {
+      "content": "This is message 5",
+      "senderUuid": "005",
+      "sentAt": "2021-06-15T10:29:23Z"
     }
   ]
 }
