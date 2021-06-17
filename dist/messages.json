@@ -1,29 +1,65 @@
 {
+  "messageCount": 10,
   "messages": [
+    {
+      "content": "This is message 3",
+      "senderUuid": "002",
+      "sentAt": "2021-06-15T10:39:23-07:00",
+      "uuid": "003"
+    },
     {
       "content": "This is message 1",
       "senderUuid": "001",
-      "sentAt": "2021-06-15T09:29:40Z"
+      "sentAt": "2021-06-15T09:29:40-07:00",
+      "uuid": "001"
     },
     {
       "content": "This is message 2",
-      "senderUuid": "002",
-      "sentAt": "2021-06-15T10:29:23Z"
-    },
-    {
-      "content": "This is message 3",
-      "senderUuid": "003",
-      "sentAt": "2021-06-15T10:29:23Z"
+      "senderUuid": "001",
+      "sentAt": "2021-06-15T10:29:23-07:00",
+      "uuid": "002"
     },
     {
       "content": "This is message 4",
-      "senderUuid": "004",
-      "sentAt": "2021-06-15T10:29:23Z"
+      "senderUuid": "001",
+      "sentAt": "2021-06-15T10:50:23-07:00",
+      "uuid": "004"
     },
     {
       "content": "This is message 5",
-      "senderUuid": "005",
-      "sentAt": "2021-06-15T10:29:23Z"
+      "senderUuid": "002",
+      "sentAt": "2021-06-15T11:09:23-07:00",
+      "uuid": "005"
+    },
+    {
+      "content": "This is message 6",
+      "senderUuid": "001",
+      "sentAt": "2021-06-15T11:12:40-07:00",
+      "uuid": "006"
+    },
+    {
+      "content": "This is message 7",
+      "senderUuid": "001",
+      "sentAt": "2021-06-15T11:29:23-07:00",
+      "uuid": "007"
+    },
+    {
+      "content": "This is message 8",
+      "senderUuid": "002",
+      "sentAt": "2021-06-16T06:25:23-07:00",
+      "uuid": "008"
+    },
+    {
+      "content": "This is message 9",
+      "senderUuid": "001",
+      "sentAt": "2021-06-16T06:29:23-07:00",
+      "uuid": "009"
+    },
+    {
+      "content": "This is message 10",
+      "senderUuid": "002",
+      "sentAt": "2021-06-16T07:22:22-07:00",
+      "uuid": "010"
     }
   ]
 }

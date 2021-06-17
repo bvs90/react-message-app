@@ -1,5 +1,4 @@
-export interface IMessage {
-  content: string;
-  senderUuid: string;
-  sentAt: string;
+export interface MessageData {
+  messageCount: number;
+  messages: [content: string, senderUuid: string, sentAt: string, uuid: string];
 }
