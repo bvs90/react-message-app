@@ -1,4 +1,9 @@
-import { MessageData } from './message/message.interface';
+import { IMessage } from './message/message.interface';
+
+interface MessageData {
+  messageCount: number;
+  messages: IMessage[];
+}
 
 export function fetchMessages(
   offset: number,
@@ -17,30 +22,18 @@ export function fetchMessages(
     })
     .then((data) => {
       const pageWindow = pageSize * offset;
-      const { messageCount, messages } = data;
+      const { messages } = data;
       // sort the response accoring to the direction specified
       const sortedMessages = sortMessages(sortDir, messages);
+      const deDupedMessages = deDupeMessages(sortedMessages);
 
-      // take the 5 messages that are required - look at the offset
-
-      console.log(pageWindow);
-
-      const messagesToSend = sortedMessages.slice(
+      const messagesToSend = deDupedMessages.slice(
         pageWindow,
         pageWindow + pageSize
       );
 
-      console.log('messageToSend: ', messagesToSend);
-
-      // deDupe messagesToSend
-      // track if any are duplicates and pull the next one
-      // update the total number of messages in the response based on de-deduplication?
-      // console.log(messagesToSend);
-
-      // Sort the resposne according to dirtection
-
       const messagesData = {
-        messageCount,
+        messageCount: deDupedMessages.length,
         messages: messagesToSend
       };
 
@@ -49,12 +42,38 @@ export function fetchMessages(
     .then((messageData) => {
       // Simulate a network request by delaying the response
       return new Promise((resolve) => {
-        setTimeout(() => resolve(messageData), 3000);
+        setTimeout(() => resolve(messageData), 500);
       });
     });
 }
 
-function sortMessages(direction: string, messages) {
+/**
+ * Simple de-duplication of sorted messages by content and UUID
+ * @param  messages
+ * @return
+ */
+function deDupeMessages(messages: IMessage[]) {
+  return messages.filter((message, index, messages) => {
+    const previousMessage = messages[index - 1];
+    let isDuplicate = false;
+
+    if (previousMessage) {
+      const hasSameContent = message.content === previousMessage.content;
+      const hasSameUuid = message.uuid === previousMessage.uuid;
+      isDuplicate = hasSameContent && hasSameUuid;
+    }
+
+    return !isDuplicate;
+  });
+}
+
+/**
+ * Sort all the messages by the sentAt property in the requested direction
+ * @param   direction The chosen sort direction, either 'asc or 'desc'.
+ * @param   messages  The messages to be sorted.
+ * @return            An array of messages.
+ */
+function sortMessages(direction: string, messages: IMessage[]) {
   if (direction === 'asc') {
     return messages.sort((messageA, messageB) => {
       return messageA.sentAt > messageB.sentAt
@@ -73,8 +92,3 @@ function sortMessages(direction: string, messages) {
     });
   }
 }
-// else {
-// }
-
-// return;
-// }

@@ -2,14 +2,10 @@ import React from 'react';
 
 import { fetchMessages } from '../message-data.service';
 import { Message } from '../message/message';
-// import { IMessage } from '../message/message.interface';
 
 export function Messages(): React.ReactElement {
   const [messages, setMessages] = React.useState([]);
   const [messageCount, setMessageCount] = React.useState(0);
-  // const [offset, setOffset] = React.useState(0);
-  // const [sortDirection, setSortDirection] = React.useState('asc');
-
   const [fetchState, setFetchState] = React.useState({
     offset: 0,
     sortDirection: 'asc'
@@ -17,53 +13,42 @@ export function Messages(): React.ReactElement {
 
   const pageSize = 5;
 
-  // const messageListRef = React.useRef();
-
   React.useEffect(() => {
-    // console.log('Fetch new data: ', offset);
-
-    // sort direction changes need to clear the current messages
-    // clear the offset so we can create a new window, or keep the current window if scrolling had already occured
-    // fetch messages with the correct sorting direction
     const { offset, sortDirection } = fetchState;
 
     fetchMessages(offset, sortDirection).then((messageData) => {
-      // Update the total number of messages in case there were duplicates
+      // Update the total number of messages
       setMessageCount(messageData.messageCount);
-      setMessages(messages.concat(messageData.messages));
+      setMessages([...messages, ...messageData.messages]);
     });
   }, [fetchState]);
 
-  function checkScrollPosition(event: React.UIEvent<HTMLElement, UIEvent>) {
-    event.preventDefault();
-
+  /**
+   * Determine if the component should fetch the next page of data based on the scroll position.
+   */
+  function checkScrollPosition(): void {
     // check if there are pages remaining to fetch otherwise return
-    // console.log(
-    //   offset + 2 * pageSize > messageCount,
-    //   offset + 2,
-    //   pageSize,
-    //   messageCount
-    // );
     if (fetchState.offset + 2 * pageSize > messageCount) {
       return;
     }
 
     const containerEl: HTMLElement = document.querySelector(
-      '.message-container'
+      '.message-list-container'
     );
     const listEl: HTMLElement = document.querySelector('.message-list');
 
-    if (
-      containerEl.clientHeight + containerEl.scrollTop >=
-      (listEl.clientHeight / 100) * 90
-    ) {
+    if (containerEl.scrollTop >= (listEl.clientHeight / 100) * 40) {
       setFetchState({
-        offset: fetchState.offset + 1,
-        sortDirection: fetchState.sortDirection
+        ...fetchState,
+        ...{ offset: fetchState.offset + 1 }
       });
     }
   }
 
+  /**
+   * Deletes a message from the view.
+   * @param messageId  The ID of the message to delete.
+   */
   function deleteMessage(messageId: string): void {
     const messagesCopy = [...messages].filter((message) => {
       return message.uuid !== messageId;
@@ -72,34 +57,56 @@ export function Messages(): React.ReactElement {
     setMessages(messagesCopy);
   }
 
-  function sortMessages(direction: string) {
+  /**
+   * Re-fetches the messages per
+   * @param direction  The chosen sort direction.
+   */
+  function sortMessages(direction: string): void {
     setMessages([]);
-    setFetchState({ offset: 0, sortDirection: direction });
+    setFetchState({
+      ...fetchState,
+      ...{ offset: 0, sortDirection: direction }
+    });
   }
 
   return (
-    <div
-      className="message-container"
-      onScroll={(event) => checkScrollPosition(event)}
-    >
-      <button onClick={() => sortMessages('asc')}>Sort Ascending</button>
-      <button onClick={() => sortMessages('desc')}>Sort Descending</button>
-
-      <ul
-        className="message-list"
-        // ref={messageListRef}
+    <div className="message-container">
+      <h1>Message App</h1>
+      <button
+        className="button-primary"
+        disabled={fetchState.sortDirection === 'asc'}
+        onClick={() => sortMessages('asc')}
       >
-        {messages.length > 0 &&
-          messages.map((message) => {
-            return (
-              <Message
-                key={message.uuid}
-                {...message}
-                deleteMessage={deleteMessage}
-              />
-            );
-          })}
-      </ul>
+        Sort Asc
+      </button>
+      <button
+        className="button-primary"
+        disabled={fetchState.sortDirection === 'desc'}
+        onClick={() => sortMessages('desc')}
+      >
+        Sort Desc
+      </button>
+
+      <div
+        className="message-list-container"
+        onScroll={() => checkScrollPosition()}
+      >
+        <ul className="message-list">
+          {messages.length > 0 ? (
+            messages.map((message) => {
+              return (
+                <Message
+                  key={message.uuid}
+                  {...message}
+                  deleteMessage={deleteMessage}
+                />
+              );
+            })
+          ) : (
+            <div>Loading initial messages..</div>
+          )}
+        </ul>
+      </div>
     </div>
   );
 }

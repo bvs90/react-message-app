@@ -46,10 +46,15 @@ export function Message({
 
   return (
     <li className="message">
-      <div className="message-date">Sent At: {formatMessageDate(sentAt)}</div>
+      <div className="message-header">
+        <div className="message-date">Sent At: {formatMessageDate(sentAt)}</div>
+        <button className="button-danger" onClick={() => deleteMessage(uuid)}>
+          Delete
+        </button>
+      </div>
+
+      <div className="message-sender">From: {senderUuid}</div>
       <div className="message-content">Message: {content}</div>
-      <div className="message-sender">Sender: {senderUuid}</div>
-      <button onClick={() => deleteMessage(uuid)}>Delete</button>
     </li>
   );
 }
