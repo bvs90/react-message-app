@@ -42,7 +42,7 @@ export function fetchMessages(
     .then((messageData) => {
       // Simulate a network request by delaying the response
       return new Promise((resolve) => {
-        setTimeout(() => resolve(messageData), 500);
+        setTimeout(() => resolve(messageData), 300);
       });
     });
 }
@@ -74,21 +74,14 @@ function deDupeMessages(messages: IMessage[]) {
  * @return            An array of messages.
  */
 function sortMessages(direction: string, messages: IMessage[]) {
-  if (direction === 'asc') {
-    return messages.sort((messageA, messageB) => {
-      return messageA.sentAt > messageB.sentAt
-        ? 1
-        : messageA.sentAt === messageB.sentAt
-        ? 0
-        : -1;
-    });
-  } else {
-    return messages.sort((messageA, messageB) => {
-      return messageA.sentAt < messageB.sentAt
-        ? 1
-        : messageA.sentAt === messageB.sentAt
-        ? 0
-        : -1;
-    });
-  }
+  return messages.sort((messageA, messageB) => {
+    const firstMessage = direction === 'asc' ? messageA : messageB;
+    const secondMessage = direction === 'asc' ? messageB : messageA;
+
+    return firstMessage.sentAt > secondMessage.sentAt
+      ? 1
+      : firstMessage.sentAt === secondMessage.sentAt
+      ? 0
+      : -1;
+  });
 }

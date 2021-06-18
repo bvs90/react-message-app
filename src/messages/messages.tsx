@@ -7,6 +7,7 @@ export function Messages(): React.ReactElement {
   const [messages, setMessages] = React.useState([]);
   const [messageCount, setMessageCount] = React.useState(0);
   const [fetchState, setFetchState] = React.useState({
+    isLoading: false,
     offset: 0,
     sortDirection: 'asc'
   });
@@ -14,34 +15,43 @@ export function Messages(): React.ReactElement {
   const pageSize = 5;
 
   React.useEffect(() => {
+    console.log('fetching...');
+
     const { offset, sortDirection } = fetchState;
 
     fetchMessages(offset, sortDirection).then((messageData) => {
       // Update the total number of messages
       setMessageCount(messageData.messageCount);
       setMessages([...messages, ...messageData.messages]);
+      setFetchState({ ...fetchState, ...{ isLoading: false } });
     });
-  }, [fetchState]);
+  }, [fetchState.offset, fetchState.sortDirection]);
 
   /**
    * Determine if the component should fetch the next page of data based on the scroll position.
    */
   function checkScrollPosition(): void {
     // check if there are pages remaining to fetch otherwise return
-    if (fetchState.offset + 2 * pageSize > messageCount) {
+    if (
+      fetchState.isLoading ||
+      (fetchState.offset + 2) * pageSize > messageCount
+    ) {
       return;
-    }
+    } else {
+      const containerEl: HTMLElement = document.querySelector(
+        '.message-list-container'
+      );
+      const listEl: HTMLElement = document.querySelector('.message-list');
 
-    const containerEl: HTMLElement = document.querySelector(
-      '.message-list-container'
-    );
-    const listEl: HTMLElement = document.querySelector('.message-list');
-
-    if (containerEl.scrollTop >= (listEl.clientHeight / 100) * 40) {
-      setFetchState({
-        ...fetchState,
-        ...{ offset: fetchState.offset + 1 }
-      });
+      if (
+        containerEl.scrollTop + containerEl.clientHeight >=
+        (listEl.clientHeight / 100) * 90
+      ) {
+        setFetchState({
+          ...fetchState,
+          ...{ offset: (fetchState.offset += 1), isLoading: true }
+        });
+      }
     }
   }
 
@@ -91,7 +101,7 @@ export function Messages(): React.ReactElement {
         className="message-list-container"
         onScroll={() => checkScrollPosition()}
       >
-        <ul className="message-list">
+        <ul className="message-list" onScroll={() => checkScrollPosition()}>
           {messages.length > 0 ? (
             messages.map((message) => {
               return (
@@ -103,7 +113,7 @@ export function Messages(): React.ReactElement {
               );
             })
           ) : (
-            <div>Loading initial messages..</div>
+            <div>There are no messages to display</div>
           )}
         </ul>
       </div>
