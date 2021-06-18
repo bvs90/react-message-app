@@ -15,8 +15,6 @@ export function Messages(): React.ReactElement {
   const pageSize = 5;
 
   React.useEffect(() => {
-    console.log('fetching...');
-
     const { offset, sortDirection } = fetchState;
 
     fetchMessages(offset, sortDirection).then((messageData) => {
@@ -31,7 +29,6 @@ export function Messages(): React.ReactElement {
    * Determine if the component should fetch the next page of data based on the scroll position.
    */
   function checkScrollPosition(): void {
-    // check if there are pages remaining to fetch otherwise return
     if (
       fetchState.isLoading ||
       (fetchState.offset + 2) * pageSize > messageCount
@@ -57,7 +54,7 @@ export function Messages(): React.ReactElement {
 
   /**
    * Deletes a message from the view.
-   * @param messageId  The ID of the message to delete.
+   * @param  messageId  The ID of the message to delete.
    */
   function deleteMessage(messageId: string): void {
     const messagesCopy = [...messages].filter((message) => {
@@ -69,7 +66,7 @@ export function Messages(): React.ReactElement {
 
   /**
    * Re-fetches the messages per
-   * @param direction  The chosen sort direction.
+   * @param  direction  The chosen sort direction.
    */
   function sortMessages(direction: string): void {
     setMessages([]);

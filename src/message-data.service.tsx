@@ -23,7 +23,6 @@ export function fetchMessages(
     .then((data) => {
       const pageWindow = pageSize * offset;
       const { messages } = data;
-      // sort the response accoring to the direction specified
       const sortedMessages = sortMessages(sortDir, messages);
       const deDupedMessages = deDupeMessages(sortedMessages);
 
@@ -49,8 +48,8 @@ export function fetchMessages(
 
 /**
  * Simple de-duplication of sorted messages by content and UUID
- * @param  messages
- * @return
+ * @param   messages  A list of messages to de-dupe.
+ * @return            A de-duped list of messages.
  */
 function deDupeMessages(messages: IMessage[]) {
   return messages.filter((message, index, messages) => {
@@ -69,9 +68,9 @@ function deDupeMessages(messages: IMessage[]) {
 
 /**
  * Sort all the messages by the sentAt property in the requested direction
- * @param   direction The chosen sort direction, either 'asc or 'desc'.
- * @param   messages  The messages to be sorted.
- * @return            An array of messages.
+ * @param   direction  The chosen sort direction, either 'asc or 'desc'.
+ * @param   messages   The messages to be sorted.
+ * @return             An array of messages.
  */
 function sortMessages(direction: string, messages: IMessage[]) {
   return messages.sort((messageA, messageB) => {
