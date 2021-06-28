@@ -65,7 +65,7 @@ export function Messages(): React.ReactElement {
   }
 
   /**
-   * Re-fetches the messages per
+   * Re-fetches the messages per the passed in direction.
    * @param  direction  The chosen sort direction.
    */
   function sortMessages(direction: string): void {
