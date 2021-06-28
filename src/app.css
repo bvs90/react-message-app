@@ -50,6 +50,10 @@ button:hover {
   opacity: 0.8;
 }
 
+button:disabled {
+  opacity: 0.5;
+}
+
 .button-primary {
   background-color: #3ce8b7;
 }
